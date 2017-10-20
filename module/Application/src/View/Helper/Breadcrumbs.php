@@ -42,7 +42,7 @@ class Breadcrumbs extends AbstractHelper
             return ''; // Do nothing if there are no items.
         
         // Resulting HTML code will be stored in this var
-        $result = '<ol class="breadcrumb">';
+        $result = '<ol class="breadcrumb  main-content container">';
         
         // Get item count
         $itemCount = count($this->items); 

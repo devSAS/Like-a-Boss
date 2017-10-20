@@ -1,0 +1,65 @@
+<?php
+$this->headTitle('Product - ' . $product->getId());
+
+$this->mainMenu()->setActiveItemId('home');
+
+$this->pageBreadcrumbs()->setItems([
+            'Home'=>$this->url('home')
+            ]);
+        
+$form = $this->form;
+
+$form->get('comment')->setAttributes([
+    'class'=>'form-control',
+    'rows'=>6, 
+    'placeholder'=>'Text'
+    ]);
+$form->get('submit')->setAttributes(['class'=>'btn btn-primary']);
+$form->prepare();        
+?>
+
+<h1>
+    <?= $this->escapeHtml($product->getName()); ?>
+</h1>
+
+<a class="btn btn-success" href="">
+     Купить
+</a>
+
+<?php foreach ($product->getProductInfo() as $info): ?>
+
+<hr>
+
+<img src="/img/upload/<?= $this->escapeHtml($info->getImages()) ?>">
+
+<?php endforeach; ?>
+
+<?php foreach ($product->getComments() as $comment): ?>
+    <div>
+        <p><?= $comment->getAuthor() ?></p>
+        <p><?= $comment->getContent() ?></p>
+        <p><?= $comment->getDateCreated() ?></p>
+    </div>
+    <hr>
+<?php endforeach; ?>
+
+
+<a name="comment"></a>
+<h3>Напиши отзыв</h3>
+
+<div class="row">
+    <div class="col-md-8">
+        <?= $this->form()->openTag($form); ?>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('comment')); ?>
+            <?= $this->formElement($form->get('comment')); ?>
+            <?= $this->formElementErrors($form->get('comment')); ?>                  
+        </div>
+        
+        <?= $this->formElement($form->get('submit')); ?>
+        
+        <?= $this->form()->closeTag(); ?>
+    </div>    
+</div>   
+

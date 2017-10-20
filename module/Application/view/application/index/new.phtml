@@ -1,0 +1,26 @@
+<?php
+$this->headTitle('New');
+
+$this->pageBreadcrumbs()->setItems([
+    'Like a Boss'=>$this->url('home'),
+    'New'=>$this->url('new')
+]);
+?>
+<h1>New</h1>
+<div>
+    <?php
+    foreach ($products as $product): ?>
+
+        <div class="product">
+            <h1><?= $this->escapeHtml($product->getName()); ?></h1>
+            <img src="">
+            <a href="<?= $this->url('product', ['action'=>'view', 'id'=>$product->getId()]); ?>">подробней</a>
+        </div>
+
+    <?php endforeach; ?>
+
+    <?= $this->paginationControl($products,
+        'Sliding',
+        'application/partial/paginator',
+        array('route' => 'new')); ?>
+</div>

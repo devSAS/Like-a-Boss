@@ -56,28 +56,27 @@ class Menu extends AbstractHelper
         if (count($this->items)==0)
             return ''; // Do nothing if there are no items.
         
-        $result = '<nav class="navbar navbar-default" role="navigation">';
-        $result .= '<div class="navbar-header">';
-        $result .= '<button type="button" class="navbar-toggle" data-toggle="collapse"';
-        $result .= 'data-target=".navbar-ex1-collapse">';
-        $result .= '<span class="sr-only">Toggle navigation</span>';
-        $result .= '<span class="icon-bar"></span>';
-        $result .= '<span class="icon-bar"></span>';
-        $result .= '<span class="icon-bar"></span>';
-        $result .= '</button>';
-        $result .= '</div>';
-        
-        $result .= '<div class="collapse navbar-collapse navbar-ex1-collapse">';        
-        $result .= '<ul class="nav navbar-nav">';
+
+        $result = '<ul class="nav navbar-nav">';
         
         // Render items
         foreach ($this->items as $item) {
-            $result .= $this->renderItem($item);
+            if(!isset($item['float']) || $item['float']=='left')
+                $result .= $this->renderItem($item);
         }
         
         $result .= '</ul>';
-        $result .= '</div>';
-        $result .= '</nav>';
+        $result .= '<ul class="nav navbar-nav navbar-right">';
+        
+        // Render items
+        foreach ($this->items as $item) {
+            if(isset($item['float']) && $item['float']=='right')
+                $result .= $this->renderItem($item);
+        }
+        
+        $result .= '</ul>';
+
+
         
         return $result;
         
