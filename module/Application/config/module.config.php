@@ -24,6 +24,66 @@ return [
                     ],
                 ],
             ],
+            'singup' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/singup',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'singup',
+                    ],
+                ],
+            ],
+            'brands' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/brands',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'brands',
+                    ],
+                ],
+            ],
+            'new' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/new',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'new',
+                    ],
+                ],
+            ],
+            'sale' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/sale',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'sale',
+                    ],
+                ],
+            ],
+            'catalog' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/catalog',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'catalog',
+                    ],
+                ],
+            ],
+            'singin' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/singin',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'singin',
+                    ],
+                ],
+            ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -55,6 +115,7 @@ return [
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
+
         ],
     ],
 ];

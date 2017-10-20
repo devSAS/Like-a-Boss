@@ -16,4 +16,36 @@ class IndexController extends AbstractActionController
     {
         return new ViewModel();
     }
+
+    public function singupAction()
+    {
+        $viewModel = new ViewModel();
+        $viewModel->setTemplate("application/registration/singup");
+
+        return $viewModel;
+    }
+
+    public function brandsAction()
+    {
+        return new ViewModel();
+    }
+
+    public function newAction()
+    {
+        return new ViewModel();
+    }
+
+    public function singinAction()
+    {
+        return new ViewModel();
+    }
+    public function catalogAction()
+    {
+        return new ViewModel();
+    }
+    public function saleAction()
+    {
+        return new ViewModel();
+    }
+
 }
