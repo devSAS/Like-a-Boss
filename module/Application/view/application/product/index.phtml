@@ -1,0 +1,86 @@
+<?php
+$this->headTitle('Product');
+
+?>
+
+<h1>Manage Product</h1>
+
+<p>
+    <a class="btn btn-default" href="
+    <?= $this->url('product', ['action' => 'add']); ?>">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New product
+    </a>
+</p>
+
+<table class="table table-striped">
+
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Brand</th>
+        <th>Actions</th>
+    </tr>
+
+    <?php foreach ($products as $product): ?>
+
+        <tr rowspan="2" style="background: #c5aad7">
+            <td><?= $this->escapeHtml($product->getId()); ?></td>
+            <td>
+                <a href="<?= $this->url('product', ['action' => 'view', 'id' => $product->getId()]); ?>">
+                    <?= $this->escapeHtml($product->getName()); ?>
+                </a>
+            </td>
+            <td><?= $this->escapeHtml($product->getStatus()); ?>
+            </td>
+            <td><?= $this->escapeHtml($product->getBrand()); ?></td>
+
+
+            <td>
+                <a class="btn btn-info" href="<?= $this->url('product',
+                    ['action' => 'edit', 'id' => $product->getId()]); ?>">
+                    <span class="glyphicon glyphicon-pencil"></span> Edit Product
+                </a>
+                <a class="btn btn-danger" href="<?= $this->url('product',
+                    ['action'=>'delete', 'id'=>$product->getId()]); ?>"> Delete Product
+                </a>
+            </td>
+            <td
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="5">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Color</th>
+                        <th>Size</th>
+                        <th>Price</th>
+                        <th>Count</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+
+                    <?php foreach ($product->getProductInfo() as $info): ?>
+                        <tr>
+                            <td><?= $this->escapeHtml($info->getColor()); ?></td>
+                            <td><?= $this->escapeHtml($info->getSize()); ?></td>
+                            <td><?= $this->escapeHtml($info->getPrice()); ?></td>
+                            <td><?= $this->escapeHtml($info->getCount()); ?></td>
+                            <td>
+                                <a class="btn btn-success" href="<?= $this->url('product',
+                                    ['action' => 'editInfo', 'id' => $product->getId()]); ?>">
+                                    <span class="glyphicon glyphicon-pencil"></span> Edit Info
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+

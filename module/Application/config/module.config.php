@@ -9,6 +9,7 @@ namespace Application;
 
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
@@ -21,16 +22,6 @@ return [
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'index',
-                    ],
-                ],
-            ],
-            'singup' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route'    => '/singup',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'singup',
                     ],
                 ],
             ],
@@ -84,6 +75,16 @@ return [
                     ],
                 ],
             ],
+            'add' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/add',
+                    'defaults' => [
+                        'controller' => Controller\ProductController::class,
+                        'action'     => 'add',
+                    ],
+                ],
+            ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -94,11 +95,63 @@ return [
                     ],
                 ],
             ],
+            'product' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/product[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]*'
+                    ],
+                    'defaults' => [
+                        'controller'    => Controller\ProductController::class,
+                        'action'        => 'index',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
         'factories' => [
-            Controller\IndexController::class => InvokableFactory::class,
+            Controller\IndexController::class => Controller\Factory\IndexControllerFactory::class,
+            Controller\ProductController::class => Controller\Factory\ProductControllerFactory::class,
+        ],
+    ],
+
+    'access_filter' => [
+        'options' => [
+            'mode' => 'restrictive'
+        ],
+        'controllers' => [
+            Controller\IndexController::class => [
+                ['actions' => ['index', 'new','brands','sale','catalog'], 'allow' => '*'],
+                ['actions' => ['settings'], 'allow' => '@']
+            ],
+            Controller\ProductController::class => [
+                ['actions' => ['view'], 'allow' => '*'],
+                ['actions' => ['index','editInfo','edit','add','delete'], 'allow' => '+user.manage'],
+            ],
+        ]
+    ],
+    'rbac_manager' => [
+        'assertions' => [Service\RbacAssertionManager::class],
+    ],
+
+    'service_manager' => [
+        'factories' => [
+            Service\NavManager::class => Service\Factory\NavManagerFactory::class,
+            Service\ProductManager::class => Service\Factory\ProductManagerFactory::class,
+            Service\RbacAssertionManager::class => Service\Factory\RbacAssertionManagerFactory::class,
+        ],
+    ],
+    'view_helpers' => [
+        'factories' => [
+            View\Helper\Menu::class => View\Helper\Factory\MenuFactory::class,
+            View\Helper\Breadcrumbs::class => InvokableFactory::class,
+        ],
+        'aliases' => [
+            'mainMenu' => View\Helper\Menu::class,
+            'pageBreadcrumbs' => View\Helper\Breadcrumbs::class,
         ],
     ],
     'view_manager' => [
@@ -117,5 +170,19 @@ return [
             __DIR__ . '/../view',
 
         ],
+    ],
+    'doctrine' => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
+                'class' => AnnotationDriver::class,
+                'cache' => 'array',
+                'paths' => [__DIR__ . '/../src/Entity']
+            ],
+            'orm_default' => [
+                'drivers' => [
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                ]
+            ]
+        ]
     ],
 ];

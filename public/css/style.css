@@ -79,3 +79,12 @@
 .main-content  {
     padding-top: 50px;
 }
+
+.product{
+    height: 250px;
+    width: 30%;
+    display: inline-block;
+    margin-left: 5px;
+    margin-top: 5px;
+    background: #EEEEEE;
+}

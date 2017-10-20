@@ -1,1 +1,18 @@
-<h1>Catalog</h1>
+<h1>New</h1>
+<div>
+    <?php
+    foreach ($products as $product): ?>
+
+        <div class="product">
+            <h1><?= $this->escapeHtml($product->getName()); ?></h1>
+            <img src="">
+            <a href="<?= $this->url('product', ['action'=>'view', 'id'=>$product->getId()]); ?>">подробней</a>
+        </div>
+
+    <?php endforeach; ?>
+
+    <?= $this->paginationControl($products,
+        'Sliding',
+        'application/partial/paginator',
+        array('route' => 'catalog')); ?>
+</div>

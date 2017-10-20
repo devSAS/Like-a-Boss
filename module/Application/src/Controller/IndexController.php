@@ -7,45 +7,76 @@
 
 namespace Application\Controller;
 
+use Application\Entity\Products;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
+use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
+use Zend\Paginator\Paginator;
+
 
 class IndexController extends AbstractActionController
 {
+    /**
+     * Entity manager.
+     * @var Doctrine\ORM\EntityManager
+     */
+    private $entityManager;
+
+    /**
+     * Constructor. Its purpose is to inject dependencies into the controller.
+     */
+    public function __construct($entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     public function indexAction()
     {
         return new ViewModel();
-    }
-
-    public function singupAction()
-    {
-        $viewModel = new ViewModel();
-        $viewModel->setTemplate("application/registration/singup");
-
-        return $viewModel;
     }
 
     public function brandsAction()
     {
         return new ViewModel();
     }
-
-    public function newAction()
-    {
-        return new ViewModel();
-    }
-
-    public function singinAction()
-    {
-        return new ViewModel();
-    }
-    public function catalogAction()
-    {
-        return new ViewModel();
-    }
     public function saleAction()
     {
         return new ViewModel();
+    }
+
+    public function newAction()
+    {
+        $page = $this->params()->fromQuery('page', 1);
+
+        $query = $this->entityManager->getRepository(Products::class)
+                ->findNewProducts();
+
+        $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
+        $paginator = new Paginator($adapter);
+        $paginator->setDefaultItemCountPerPage(1);
+        $paginator->setCurrentPageNumber($page);
+
+        return new ViewModel([
+            'products' => $paginator,
+        ]);
+    }
+
+
+    public function catalogAction()
+    {
+        $page = $this->params()->fromQuery('page', 1);
+
+        $query = $this->entityManager->getRepository(Products::class)
+            ->findProducts();
+
+        $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
+        $paginator = new Paginator($adapter);
+        $paginator->setDefaultItemCountPerPage(1);
+        $paginator->setCurrentPageNumber($page);
+
+        return new ViewModel([
+            'products' => $paginator,
+        ]);
     }
 
 }
